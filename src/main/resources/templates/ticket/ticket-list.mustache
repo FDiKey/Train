@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="admin/ticket-list/" method="get">
+    <select name="trainNumber">
+        {{#trains}}
+            <option>{{trainNumber}}</option>
+        {{/trains}}
+    </select>
+        <button type="submit">Show tickets</button>
+        {{#tickets}}
+            {{train.trainNumber}}
+            {{seatNumber}}
+        {{/tickets}}
+
+        {{#message}}
+            {{message}}
+        {{/message}}
+    </form>
+</body>
+</html>

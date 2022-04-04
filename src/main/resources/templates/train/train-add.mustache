@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {{#message}}
+        {{message}}
+    {{/message}}
+
+    <form action="train-add" method="post">
+        <div><input type="text" name="trainNumber" placeholder="Enter train number"/></div>
+        <div>
+            <select name="route">
+                {{#routes}}
+                <option>{{number}}</option>
+                {{/routes}}
+            </select>
+        </div>
+        <div><input type="number" name="seatCount" placeholder="Enter count of seats"/></div>
+        <input type="hidden" value="{{_csrf.token}}" name="_csrf"/>
+        <div><input type="datetime-local" name="dateStart"/></div>
+
+        <div><button type="submit">Add new train</button></div>
+
+    </form>
+</body>
+</html>
