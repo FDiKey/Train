@@ -15,6 +15,8 @@ public class User implements UserDetails {
     private Long id;
     private String username;
     private String password;
+
+    private String activationCode;
     private boolean active = true;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -33,6 +35,7 @@ public class User implements UserDetails {
     public boolean isAdmin(){
         return roles.contains(Role.ADMIN);
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -91,4 +94,13 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+    // todo equals and hashcode
 }

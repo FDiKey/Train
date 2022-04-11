@@ -43,4 +43,6 @@ public class Route {
     public Long getId(){
         return id;
     }
+
+    // todo equals and hashcode
 }

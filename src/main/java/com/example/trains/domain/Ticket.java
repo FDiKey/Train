@@ -1,13 +1,16 @@
 package com.example.trains.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,6 +18,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "train_id")
     private Train train;
+
     private int seatNumber;
     private double price;
     @OneToOne
@@ -34,8 +38,6 @@ public class Ticket {
     @ManyToOne
     private Passenger passenger;
 
-    public Ticket(){}
-
     public Ticket(Passenger passenger, Train train, Schedule from, Schedule to,  Set<Station> stationBetween,  int seatNumber) {
         this.passenger = passenger;
         this.train = train;
@@ -48,9 +50,9 @@ public class Ticket {
         this.stationBetween = stationBetween;
     }
 
-    public Schedule getScheduleFrom() {
-        return scheduleFrom;
-    }
+//    public Schedule getScheduleFrom() {
+//        return scheduleFrom;
+//    }
 
     public void setScheduleFrom(Schedule scheduleFrom) {
         this.scheduleFrom = scheduleFrom;
@@ -72,4 +74,6 @@ public class Ticket {
     public String getToName(){
         return to.getName();
     }
+
+    // todo equals and hashcode
 }

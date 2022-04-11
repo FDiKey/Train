@@ -65,7 +65,7 @@ public class Schedule {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return timeOnStation != null ? timeOnStation.toString() : "00:00";
     }
-
+    // todo equals and hashcode
 
 
 }

@@ -107,4 +107,6 @@ public class Station {
     public void setSchedule(Set<Schedule> schedule) {
         this.schedule = schedule;
     }
+
+    // todo equals and hashcode
 }

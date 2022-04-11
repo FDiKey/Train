@@ -11,11 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,9 +38,14 @@ public class UserService implements UserDetailsService {
             return false;
 
         user.setRoles(Collections.singleton(Role.USER));
+        user.setActivationCode(UUID.randomUUID().toString());
         userRepo.save(user);
         Passenger passenger = new Passenger(userRepo.findByUsername(user.getUsername()));
         passengerRepo.save(passenger);
+
+        if(!StringUtils.isEmpty(user.getUsername())){
+
+        }
         return true;
     }
 

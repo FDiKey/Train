@@ -92,4 +92,7 @@ public class Train {
     {
         return timeStart;
     }
+
+
+    // todo equals and hashcode
 }

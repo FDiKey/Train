@@ -24,9 +24,11 @@
                     </ul>
                 </li>
             </#if>
+            <#if known>
             <li class="nav-item">
                 <a class="nav-link" href="http://localhost:8080/my-tickets">My tickets</a>
             </li>
+            </#if>
         </ul>
         <#if username??>
             <div class="member-name-link mr-3">
