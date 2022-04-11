@@ -12,7 +12,10 @@ import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.sound.midi.SysexMessage;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Service
@@ -33,13 +36,11 @@ public class ScheduleService {
 
     //Get first station of route for calculate time
     private Station getFirstStation(Route route) {
-        System.out.println(route.getNumber() + " " + route.getId());
-        System.out.println(stationRepo.findStationByRouteAndNextStationIsNull(route));
-        Station station = stationRepo.findStationByRouteAndNextStationIsNull(route);
+        Station station = stationRepo.findStationByRouteAndPreviousStationIsNull(route);
         return station;
     }
 
-    //
+    //Genereted schedule for new train
     public void generateSchedule(Train train){
         Set<Station> stations = getAllStations(train.getRoute()); //get all station of route
         for (Station station: stations) {   //iterate stations to generate schedule
@@ -47,7 +48,10 @@ public class ScheduleService {
             Schedule schedule = new Schedule();
             schedule.setTrain(train);
             schedule.setStation(station);
-            schedule.setOnStation(calculateSchedule(train.getStart(),count));
+            // Calculate date and time from station to station
+            LocalDateTime temp = calculateSchedule(train.getDateStart(), train.getTimeStart(), count);
+            schedule.setDateOnStation(temp.toLocalDate());
+            schedule.setTimeOnStation(temp.toLocalTime());
             scheduleRepo.save(schedule);
         }
     }
@@ -61,21 +65,30 @@ public class ScheduleService {
         return trains;
     }
     private int getCountOfStation(Station stationTo){
+        // get start station from route and calculate amount of station to destination.
         Station firstStation = getFirstStation(stationTo.getRoute());
-        return getCount(firstStation, stationTo, 0);
+        if(firstStation != stationTo) {
+            return getCount(firstStation, stationTo, 0);
+        }
+        return 0;
     }
     private int getCount(@NotNull Station firstStation, @NotNull Station stationTo, int count) {
         Station nextStation = firstStation.getNextStation();
         if(nextStation != stationTo && nextStation != null){
-            count++;
-            return getCount(nextStation, stationTo, count);
+            count = getCount(nextStation, stationTo, count);
         }
         count++;
         return count;
     }
-    private LocalDateTime calculateSchedule(LocalDateTime startTime, int countOfStations){
-        startTime.plusMinutes(countOfStations*5);
-        return LocalDateTime.now();
+
+    private LocalDateTime calculateSchedule(LocalDate startDate, LocalTime startTime, int countOfStations){
+        // union date and time to calculate time on destination station
+        LocalDateTime dt = LocalDateTime.of(startDate, startTime);
+        // constant time between stations 20 minutes
+        if(countOfStations > 0)
+            return dt.plusMinutes(countOfStations * 20);
+        else
+            return dt;
     }
 
     public void refreshAllSchedule() {
@@ -84,5 +97,13 @@ public class ScheduleService {
         for(Train train: trains){
             generateSchedule(train);
         }
+    }
+
+    public Iterable<Schedule> getScheduleByStation(Station station) {
+        return scheduleRepo.findSchedulesByStation(station);
+    }
+
+    public Iterable<Schedule> getAllSchedules() {
+        return scheduleRepo.findAll();
     }
 }

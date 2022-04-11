@@ -3,13 +3,13 @@ package com.example.trains.Controllers;
 import com.example.trains.Servicies.AdminService;
 import com.example.trains.domain.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
 public class RouteController {
     @Autowired
     final private AdminService adminService;
@@ -20,22 +20,27 @@ public class RouteController {
     }
 
     @GetMapping("admin/route-list")
-    public String getRoutes(Model model)
-    {
+    public String getRoutes(Model model){
         adminService.getRoutes(model);
         return "route/route-list";
     }
 
-    @GetMapping("admin/route-edit/{id}")
-    public String editRoute( Model model){
+    @GetMapping("admin/route-edit/{route}")
+    public String editRoute(@PathVariable Route route, Model model){
+        model.addAttribute("route", route);
+        return "route/route-edit";
+    }
 
-
-        return "route/route-edit/";
+    @PostMapping("admin/route-edit/{route}")
+    public String updateRoute(@PathVariable Route route,
+                              @RequestParam String routeNumber,
+                              Model model){
+        adminService.updateRoute(route, routeNumber, model);
+        return "redirect:/admin/route-list/";
     }
 
     @GetMapping("admin/route-add")
     public String addRoute(Model model){
-        model.addAttribute("message","");
         return "route/route-add";
     }
 
@@ -50,5 +55,12 @@ public class RouteController {
         }
         return "redirect:/admin/route-list";
     }
+
+    @GetMapping("admin/route-delede/{route}")
+    public String deleteRoute(@PathVariable Route route, Model model){
+        adminService.deleteRoute(route);
+        return "redirect:/admint/route-list";
+    }
+
 
 }

@@ -30,8 +30,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public boolean isAdmin(){
+        return roles.contains(Role.ADMIN);
     }
 
     @Override
@@ -54,10 +54,6 @@ public class User implements UserDetails {
         return isActive();
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -65,6 +61,15 @@ public class User implements UserDetails {
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username == null ? "" : username;
+    }
+
+    public void setUsername(String username){
+        this.username = username;
     }
 
     public void setPassword(String password) {

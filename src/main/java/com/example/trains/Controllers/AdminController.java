@@ -2,11 +2,13 @@ package com.example.trains.Controllers;
 
 import com.example.trains.Servicies.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
     @Autowired

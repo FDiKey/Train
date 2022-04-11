@@ -11,10 +11,9 @@ import java.util.Set;
 public class Station {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
     @Getter
     @Setter
-    private long Id;
+    private Long Id;
     @Getter
     @Setter
     private String name;
@@ -49,7 +48,63 @@ public class Station {
         this.route = route;
     }
 
+
     public Station() {
 
+    }
+
+    public String getRouteNumber(){
+        return route != null ? route.getNumber() : "none";
+    }
+
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(long id) {
+        Id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    @Nullable
+    public Station getPreviousStation() {
+        return previousStation;
+    }
+
+    public void setPreviousStation(@Nullable Station previousStation) {
+        this.previousStation = previousStation;
+    }
+
+    @Nullable
+    public Station getNextStation() {
+        return nextStation;
+    }
+
+    public void setNextStation(@Nullable Station nextStation) {
+        this.nextStation = nextStation;
+    }
+
+    public Set<Schedule> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Set<Schedule> schedule) {
+        this.schedule = schedule;
     }
 }

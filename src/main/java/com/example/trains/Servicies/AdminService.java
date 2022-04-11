@@ -1,15 +1,16 @@
 package com.example.trains.Servicies;
 
-import com.example.trains.Repo.PassengerRepo;
-import com.example.trains.Repo.RouteRepo;
-import com.example.trains.Repo.StationRepo;
-import com.example.trains.Repo.TrainRepo;
+import com.example.trains.Repo.*;
 import com.example.trains.domain.*;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Service
@@ -27,14 +28,16 @@ public class AdminService {
     final private TicketService ticketService;
     @Autowired
     final private ScheduleService scheduleService;
+    final private TicketRepo ticketRepo;
 
-    public AdminService(StationRepo stationRepo, PassengerRepo passagerRepo, TrainRepo trainRepo, RouteRepo routeRepo, TicketService ticketService, ScheduleService scheduleService) {
+    public AdminService(StationRepo stationRepo, PassengerRepo passagerRepo, TrainRepo trainRepo, RouteRepo routeRepo, TicketService ticketService, ScheduleService scheduleService, TicketRepo ticketRepo) {
         this.stationRepo = stationRepo;
         this.passagerRepo = passagerRepo;
         this.trainRepo = trainRepo;
         this.routeRepo = routeRepo;
         this.ticketService = ticketService;
         this.scheduleService = scheduleService;
+        this.ticketRepo = ticketRepo;
     }
 
     public void getAllStations(Model model){
@@ -68,7 +71,7 @@ public class AdminService {
     }
 
     public void getRoutes(Model model) {
-        Iterable<Route> routes = routeRepo.findAll();
+        Iterable<Route> routes = routeRepo.findAll(Sort.by(Sort.Direction.ASC, "Id"));
         model.addAttribute("routes", routes);
     }
 
@@ -82,26 +85,103 @@ public class AdminService {
         return true;
     }
 
-    public boolean addTrain(String trainNumber, String route, String seatCount, String dateStart) {
+    public boolean addTrain(String trainNumber, String route, String seatCount, String dateStart, String timeStart) {
         if(trainRepo.findByTrainNumber(trainNumber) != null)
             return false;
         Route r = routeRepo.findByNumber(route);
 
-        Train train = new Train(trainNumber, Integer.valueOf(seatCount) , r, LocalDateTime.parse(dateStart));
+        Train train = new Train(trainNumber, Integer.valueOf(seatCount) , r, LocalDate.parse(dateStart), LocalTime.parse(timeStart));
 
         trainRepo.save(train);
         scheduleService.generateSchedule(train);
-        ticketService.createTickets(trainRepo.findByTrainNumber(train.getTrainNumber()), seatCount);
         return true;
     }
 
     public void getAllTrains(Model model) {
-        Iterable<Train> trains = trainRepo.findAll();
+        Iterable<Train> trains = trainRepo.findAllByIdIsNotNullOrderById();
         model.addAttribute("trains", trains);
     }
 
     public Set<Ticket> getAllTickets(String trainNumber) {
         Train train = trainRepo.findByTrainNumber(trainNumber);
-        return train.getTickets();
+        Set<Ticket> tickets = ticketRepo.findAllByTrain(train);
+        return tickets;
+    }
+
+    public boolean updateRoute(@NotNull Route route, String routeNumber, Model model) {
+        Route fromDB = routeRepo.findByNumber(route.getNumber());
+        if(fromDB.getNumber().equals(routeNumber))
+        {
+            model.addAttribute("message", "No changes");
+            return false;
+        }
+        else
+        {
+            fromDB.setNumber(routeNumber);
+            routeRepo.save(fromDB);
+            model.addAttribute("message", "Changes applied");
+            return true;
+        }
+    }
+
+    public boolean updateStation(@NotNull Station station, String stationName, Model model) {
+        Station fromDB = stationRepo.findByName(station.getName());
+        if(fromDB.getName().equals(stationName))
+        {
+            model.addAttribute("message", "No changes");
+            return false;
+        }
+        else
+        {
+            fromDB.setName(stationName);
+            stationRepo.save(fromDB);
+            model.addAttribute("message", "Changes applied");
+            return true;
+        }
+    }
+
+    public boolean checkUpdate(Train train,
+                               String trainNumber,
+                               String routeNumber,
+                               String seatCount,
+                               LocalDateTime dateStart) {
+        Train fromDB = trainRepo.findByTrainNumber(train.getTrainNumber());
+        if (
+                !fromDB.getTrainNumber().equals(trainNumber) ||
+                !fromDB.getRoute().getNumber().equals(routeNumber) ||
+                !(fromDB.getSeatCount() == Integer.valueOf(seatCount)) ||
+                !fromDB.getDateStart().equals(dateStart.toLocalDate()) ||
+                !fromDB.getTimeStart().equals(dateStart.toLocalTime())
+        )
+        {
+            updateTrain(fromDB, trainNumber, routeNumber, Integer.valueOf(seatCount),dateStart);
+            return true;
+        }
+        return false;
+    }
+
+    private void updateTrain(Train fromDB, String trainNumber, String routeNumber, int seatCount, LocalDateTime dateStart) {
+        Route route = routeRepo.findByNumber(routeNumber);
+        fromDB.setTrainNumber(trainNumber);
+        fromDB.setRoute(route);
+        fromDB.setSeatCount(seatCount);
+        fromDB.setDateStart(dateStart.toLocalDate());
+        fromDB.setTimeStart(dateStart.toLocalTime());
+        trainRepo.save(fromDB);
+    }
+
+
+    public void deleteRoute(Route route) {
+        routeRepo.delete(route);
+    }
+
+
+    // implement logic with deletion of tickets and schedule
+    public void deleteTrain(Train train) {
+        trainRepo.delete(train);
+    }
+    // implement logic of deletion of staion. (refresh schedule etc)
+    public void deleteStation(Station station) {
+        stationRepo.delete(station);
     }
 }

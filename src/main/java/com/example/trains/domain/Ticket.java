@@ -4,13 +4,14 @@ import lombok.Data;
 import lombok.Generated;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "train_id")
     private Train train;
@@ -21,15 +22,54 @@ public class Ticket {
     @OneToOne
     private Station to;
 
+    @OneToOne
+    private Schedule scheduleFrom;
+
+    @OneToOne
+    private Schedule scheduleTo;
+
+    @ManyToMany
+    private Set<Station> stationBetween;
 
     @ManyToOne
     private Passenger passenger;
 
     public Ticket(){}
 
-    public Ticket(Train train, int seatNumber) {
+    public Ticket(Passenger passenger, Train train, Schedule from, Schedule to,  Set<Station> stationBetween,  int seatNumber) {
+        this.passenger = passenger;
         this.train = train;
-        this.seatNumber = seatNumber;
+        this.from = from.getStation();
+        this.to = to.getStation();
+        this.scheduleFrom = from;
+        this.scheduleTo = to;
+        this.seatNumber = seatNumber; // todo implement logic with seatNumber
         this.price = price;
+        this.stationBetween = stationBetween;
+    }
+
+    public Schedule getScheduleFrom() {
+        return scheduleFrom;
+    }
+
+    public void setScheduleFrom(Schedule scheduleFrom) {
+        this.scheduleFrom = scheduleFrom;
+    }
+
+    public Schedule getScheduleTo() {
+        return scheduleTo;
+    }
+
+    public void setScheduleTo(Schedule scheduleTo) {
+        this.scheduleTo = scheduleTo;
+    }
+
+    public String getFromName()
+    {
+        return from.getName();
+    }
+
+    public String getToName(){
+        return to.getName();
     }
 }

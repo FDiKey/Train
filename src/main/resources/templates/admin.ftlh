@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Heello </title>
-</head>
-<body>
-
-
+<#import "parts/common.ftlh" as c>
+<@c.page>
 <div>
     <a href="/admin/route-list">Routes</a>
     <a href="/admin/station-list">Stations</a>
@@ -17,5 +10,4 @@
         <button type="submit">refresh schedule</button>
     </form>
 </div>
-</body>
-</html>
+</@c.page>

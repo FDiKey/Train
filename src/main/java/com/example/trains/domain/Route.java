@@ -1,5 +1,6 @@
 package com.example.trains.domain;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,9 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Setter
-    private long Id;
+    @NotNull
+    private Long id;
+
     @Getter
     @Setter
     private String number;
@@ -35,5 +38,9 @@ public class Route {
     public Route(String number)
     {
         this.number = number;
+    }
+
+    public Long getId(){
+        return id;
     }
 }
