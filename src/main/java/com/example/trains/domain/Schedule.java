@@ -65,7 +65,5 @@ public class Schedule {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return timeOnStation;
     }
-    // todo equals and hashcode
-
 
 }

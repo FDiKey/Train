@@ -20,10 +20,7 @@ public class PassangerController {
 
     @GetMapping("profile")
     public String getProfile(Model model, @AuthenticationPrincipal User user) {
-
-        if(passengerService.getProfile(model, user)){
-            return "profile";
-        }
+        passengerService.getProfile(model, user);
 
         return "profile";
     }

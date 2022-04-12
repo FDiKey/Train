@@ -22,7 +22,7 @@ public class SearchService {
     private RouteRepo routeRepo;
 
 
-    public Iterable<Schedule> getScheduleByStationName(String stationName)
+    public Iterable<Schedule> getSchedulesByStationName(String stationName)
     {
         Station station = stationRepo.findByName(stationName);
         if(station != null)
@@ -65,7 +65,7 @@ public class SearchService {
 
     public void getMainPage(Model model) {
         HashMap<String, Iterable<Station>> stationByRoute = new HashMap<>();
-        Iterable<Route> routes = routeRepo.findAll();
+        var routes = routeRepo.findAll();
         for(Route route : routes)
         {
             stationByRoute.put(route.getNumber(), stationRepo.findStationsByRoute(route));

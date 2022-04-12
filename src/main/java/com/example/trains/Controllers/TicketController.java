@@ -29,7 +29,7 @@ public class TicketController {
             Iterable<Ticket> tickets = adminService.getAllTickets(trainNumber);
             model.addAttribute("tickets", tickets);
         }
-        adminService.getAllTrains(model);
+        adminService.getAllTrainsToFrom(model);
         return "ticket/ticket-list";
     }
 

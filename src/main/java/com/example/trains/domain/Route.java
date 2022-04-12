@@ -45,5 +45,5 @@ public class Route {
         return id;
     }
 
-    // todo equals and hashcode
+
 }

@@ -16,7 +16,7 @@ public class RouteController {
 
     @GetMapping("admin/route-list")
     public String getRoutes(Model model){
-        adminService.getRoutes(model);
+        adminService.getRoutesToFrom(model);
         return "route/route-list";
     }
 
@@ -30,7 +30,7 @@ public class RouteController {
     public String updateRoute(@PathVariable Route route,
                               @RequestParam String routeNumber,
                               Model model){
-        adminService.updateRoute(route, routeNumber, model);
+        adminService.isRouteUpdated(route, routeNumber, model);
         return "redirect:/admin/route-list/";
     }
 

@@ -17,9 +17,9 @@ public class StationController {
     private AdminService adminService;
 
     @GetMapping("admin/station-list")
-    public String stationList(Model model)
+    public String getStationList(Model model)
     {
-        adminService.getAllStations(model);
+        adminService.getAllStationsToFrom(model);
         return "station/station-list";
     }
 
@@ -56,7 +56,7 @@ public class StationController {
                               @RequestParam String stationName,
                               //Add previous and next stations
                               Model model){
-        adminService.updateStation(station, stationName, model);
+        adminService.isStationUpdated(station, stationName, model);
         return "redirect:/admin/station-list";
     }
 

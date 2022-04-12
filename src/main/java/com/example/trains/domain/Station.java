@@ -1,5 +1,6 @@
 package com.example.trains.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Data
 public class Station {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -108,5 +110,4 @@ public class Station {
         this.schedule = schedule;
     }
 
-    // todo equals and hashcode
 }

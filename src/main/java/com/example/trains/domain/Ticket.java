@@ -45,7 +45,7 @@ public class Ticket {
         this.to = to.getStation();
         this.scheduleFrom = from;
         this.scheduleTo = to;
-        this.seatNumber = seatNumber; // todo implement logic with seatNumber
+        this.seatNumber = seatNumber;
         this.price = price;
         this.stationBetween = stationBetween;
     }
@@ -75,5 +75,4 @@ public class Ticket {
         return to.getName();
     }
 
-    // todo equals and hashcode
 }

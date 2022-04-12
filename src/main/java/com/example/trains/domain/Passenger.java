@@ -73,5 +73,5 @@ public class Passenger {
     public void setbDay(LocalDate bDay) {
         this.bDay = bDay;
     }
-    // todo equals and hashcode
+
 }

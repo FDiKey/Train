@@ -24,7 +24,7 @@ public class TicketService {
     @Autowired
     private StationRepo stationRepo;
 
-    public boolean add(long trainId, Station from, Station to, double price, int seat )
+    public boolean addTicket(long trainId, Station from, Station to, double price, int seat )
     {
 //        Ticket ticket = new Ticket(trainId, from, to, price, seat);
         return true;
@@ -51,7 +51,7 @@ public class TicketService {
     }
 
     private Set<Station> getBetweenStations(Station from, Station to) {
-        Set<Station> route = stationRepo.findStationsByRoute(from.getRoute());
+        var route = stationRepo.findStationsByRoute(from.getRoute());
         Station station = stationRepo.findStationByRouteAndPreviousStationIsNull(from.getRoute());
 
         boolean isBetween = false;
@@ -96,8 +96,8 @@ public class TicketService {
         }
 
 
-        model.addAttribute("seatCount", seats);  // todo calculate amount of tickets for this station
-        model.addAttribute("price", 100 * between.stream().count()); // todo calculate price
+        model.addAttribute("seatCount", seats.size());
+        model.addAttribute("price", 100 * between.stream().count());
         model.addAttribute("scheduleFrom", scheduleFrom);
         model.addAttribute("scheduleTo", scheduleTo);
     }

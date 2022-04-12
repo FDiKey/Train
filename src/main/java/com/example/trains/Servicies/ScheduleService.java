@@ -53,7 +53,7 @@ public class ScheduleService {
     }
 
     private Set<Train> getAllTrains(Route route)    {
-        Set<Train> trains = trainRepo.findTrainsByRoute(route);
+        var trains = trainRepo.findTrainsByRoute(route);
         return trains;
     }
     private int getCountOfStation(Station stationTo){
@@ -84,7 +84,7 @@ public class ScheduleService {
     }
 
     public void refreshAllSchedule() {
-        Iterable<Train> trains = trainRepo.findAll();
+        var trains = trainRepo.findAll();
         scheduleRepo.deleteAll();
         for(Train train: trains){
             generateSchedule(train);

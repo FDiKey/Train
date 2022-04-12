@@ -34,7 +34,7 @@ public class AdminService {
     @Autowired
     private TicketRepo ticketRepo;
 
-    public void getAllStations(Model model){
+    public void getAllStationsToFrom(Model model){
         Iterable<Station> stations = stationRepo.findAll();
         model.addAttribute("stations", stations);
     }
@@ -54,26 +54,27 @@ public class AdminService {
 
         Station newStation = new Station(stationName, r != null ? r : null, p != null ? p : null, n != null ? n : null);
 
-
         stationRepo.save(newStation);
         return true;
     }
 
     public Iterable<Route> getAllRoutes() {
-        Iterable<Route> routes = routeRepo.findAll();
+        var routes = routeRepo.findAll();
         return routes;
     }
 
-    public void getRoutes(Model model) {
-        Iterable<Route> routes = routeRepo.findAll(Sort.by(Sort.Direction.ASC, "Id"));
+    public void getRoutesToFrom(Model model) {
+        var routes = routeRepo.findAll(Sort.by(Sort.Direction.ASC, "Id"));
         model.addAttribute("routes", routes);
     }
 
     public boolean addRoute(String number){
         Route route = routeRepo.findByNumber(number);
+
         if(route != null){
             return false;
         }
+
         route = new Route(number);
         routeRepo.save(route);
         return true;
@@ -91,18 +92,18 @@ public class AdminService {
         return true;
     }
 
-    public void getAllTrains(Model model) {
-        Iterable<Train> trains = trainRepo.findAllByIdIsNotNullOrderById();
+    public void getAllTrainsToFrom(Model model) {
+        var trains = trainRepo.findAllByIdIsNotNullOrderById();
         model.addAttribute("trains", trains);
     }
 
     public Set<Ticket> getAllTickets(String trainNumber) {
-        Train train = trainRepo.findByTrainNumber(trainNumber);
-        Set<Ticket> tickets = ticketRepo.findAllByTrain(train);
+        var train = trainRepo.findByTrainNumber(trainNumber);
+        var tickets = ticketRepo.findAllByTrain(train);
         return tickets;
     }
 
-    public boolean updateRoute(@NotNull Route route, String routeNumber, Model model) {
+    public boolean isRouteUpdated(@NotNull Route route, String routeNumber, Model model) {
         Route fromDB = routeRepo.findByNumber(route.getNumber());
         if(fromDB.getNumber().equals(routeNumber))
         {
@@ -118,7 +119,7 @@ public class AdminService {
         }
     }
 
-    public boolean updateStation(@NotNull Station station, String stationName, Model model) {
+    public boolean isStationUpdated(@NotNull Station station, String stationName, Model model) {
         Station fromDB = stationRepo.findByName(station.getName());
         if(fromDB.getName().equals(stationName))
         {
@@ -134,7 +135,7 @@ public class AdminService {
         }
     }
 
-    public boolean checkUpdate(Train train,
+    public boolean isTrainUpdate(Train train,
                                String trainNumber,
                                String routeNumber,
                                String seatCount,

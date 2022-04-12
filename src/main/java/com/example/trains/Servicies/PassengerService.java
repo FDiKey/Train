@@ -37,16 +37,13 @@ public class PassengerService {
         }
     }
 
-    public boolean getProfile(Model model, User user) {
+    public void getProfile(Model model, User user) {
         Passenger passenger = passengerRepo.findByUser(user);
         if(passenger != null) {
             model.addAttribute("email", user.getUsername());
             model.addAttribute("name", passenger.getName());
             model.addAttribute("surname", passenger.getSurname());
-            return true;
         }
-
-        return false;
     }
 
 

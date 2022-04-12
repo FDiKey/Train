@@ -19,14 +19,14 @@ public class TrainController {
     private AdminService adminService;
 
     @GetMapping("admin/train-list")
-    public String trainList(Model model)
+    public String getTrainList(Model model)
     {
-        adminService.getAllTrains(model);
+        adminService.getAllTrainsToFrom(model);
         return "/train/train-list";
     }
 
     @GetMapping("admin/train-add")
-    public String getTrain(Model model){
+    public String getAddTrainFrom(Model model){
         Iterable<Route> routes = adminService.getAllRoutes();
 
         model.addAttribute("message", "");
@@ -67,7 +67,7 @@ public class TrainController {
                               @RequestParam String dateStart,
                               Model model)
     {
-        if(adminService.checkUpdate(train, trainNumber, route, seatCount, LocalDateTime.parse(dateStart)))
+        if(adminService.isTrainUpdate(train, trainNumber, route, seatCount, LocalDateTime.parse(dateStart)))
         {
             return "redirect:/admin/train-list";
         }
