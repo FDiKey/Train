@@ -16,11 +16,7 @@ import java.util.Map;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
     @Autowired
-    final private UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @GetMapping("user-list")
     public String userList(Model model){

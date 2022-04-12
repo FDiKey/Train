@@ -35,8 +35,6 @@ public class Passenger {
     public Passenger(User user)
     {
         this.user = user;
-        this.name = "";
-        this.surname = "";
     }
 
     public Passenger(String name, String surname) {
@@ -53,7 +51,7 @@ public class Passenger {
     }
 
     public String getName() {
-        return name == null ? "" : name;
+        return name;
     }
 
     public void setName(String name) {
@@ -61,7 +59,7 @@ public class Passenger {
     }
 
     public String getSurname() {
-        return surname == null ? "" : surname;
+        return surname;
     }
 
     public void setSurname(String surname) {

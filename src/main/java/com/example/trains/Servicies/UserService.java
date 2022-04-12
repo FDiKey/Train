@@ -20,15 +20,10 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     @Autowired
-    final private UserRepo userRepo;
+    private UserRepo userRepo;
 
     @Autowired
-    final private PassengerRepo passengerRepo;
-
-    public UserService(UserRepo userRepo, PassengerRepo passengerRepo) {
-        this.userRepo = userRepo;
-        this.passengerRepo = passengerRepo;
-    }
+    private PassengerRepo passengerRepo;
 
     public boolean createUser(User user)
     {

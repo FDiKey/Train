@@ -15,20 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MainController {
     @Autowired
-    final private StationRepo stationRepo;
+    private StationRepo stationRepo;
 
     @Autowired
-    final private SearchService searchService;
+    private SearchService searchService;
 
     @Autowired
-    final private TicketService ticketService;
-
-    public MainController(StationRepo stationRepo, SearchService searchService, TicketService ticketService) {
-        this.stationRepo = stationRepo;
-        this.searchService = searchService;
-        this.ticketService = ticketService;
-    }
-
+    private TicketService ticketService;
 
     @GetMapping("/")
     public String index(@RequestParam(required = false, defaultValue = "") String stationFrom,

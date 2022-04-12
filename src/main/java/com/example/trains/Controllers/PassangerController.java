@@ -16,11 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PassangerController {
 
     @Autowired
-    final private PassengerService passengerService;
-
-    public PassangerController(UserService userService, PassengerService passengerService) {
-        this.passengerService = passengerService;
-    }
+    private PassengerService passengerService;
 
     @GetMapping("profile")
     public String getProfile(Model model, @AuthenticationPrincipal User user) {

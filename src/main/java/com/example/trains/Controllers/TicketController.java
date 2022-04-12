@@ -18,14 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class TicketController {
     @Autowired
-    final private TicketService ticketService;
+    private TicketService ticketService;
     @Autowired
-    final private AdminService adminService;
-
-    public TicketController(TicketService ticketService, AdminService adminService) {
-        this.ticketService = ticketService;
-        this.adminService = adminService;
-    }
+    private AdminService adminService;
 
     @GetMapping("admin/ticket-list")
     public String getTrainTickets(@RequestParam(required = false) String trainNumber, Model model)

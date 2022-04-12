@@ -1,13 +1,14 @@
 package com.example.trains.domain;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Data
+@AllArgsConstructor
 public class Route {
 
     @Id

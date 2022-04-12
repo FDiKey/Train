@@ -11,14 +11,9 @@ import org.springframework.ui.Model;
 public class PassengerService {
 
     @Autowired
-    final private PassengerRepo passengerRepo;
+    private PassengerRepo passengerRepo;
     @Autowired
-    final private UserService userService;
-
-    public PassengerService(PassengerRepo passengerRepo, UserService userService) {
-        this.passengerRepo = passengerRepo;
-        this.userService = userService;
-    }
+    private UserService userService;
 
     public void updatePassenger(User user, String email, String password, String password2, String name, String surname){
         Passenger passenger = passengerRepo.findByUser(user);

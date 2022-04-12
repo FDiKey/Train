@@ -16,12 +16,7 @@ import java.time.LocalDateTime;
 @Controller
 public class TrainController {
     @Autowired
-    final private AdminService adminService;
-
-    public TrainController(AdminService adminService) {
-        this.adminService = adminService;
-    }
-
+    private AdminService adminService;
 
     @GetMapping("admin/train-list")
     public String trainList(Model model)

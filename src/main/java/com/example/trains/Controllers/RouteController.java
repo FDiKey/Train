@@ -12,12 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class RouteController {
     @Autowired
-    final private AdminService adminService;
-
-
-    public RouteController(AdminService adminService) {
-        this.adminService = adminService;
-    }
+    private AdminService adminService;
 
     @GetMapping("admin/route-list")
     public String getRoutes(Model model){

@@ -16,19 +16,13 @@ import java.util.Set;
 public class TicketService {
 
     @Autowired
-    final private TicketRepo ticketRepo;
+    private TicketRepo ticketRepo;
 
     @Autowired
-    final private PassengerRepo passengerRepo;
+    private PassengerRepo passengerRepo;
 
     @Autowired
-    final private StationRepo stationRepo;
-
-    public TicketService(TicketRepo ticketRepo, RouteRepo routeRepo, PassengerRepo passengerRepo, StationRepo stationRepo) {
-        this.ticketRepo = ticketRepo;
-        this.passengerRepo = passengerRepo;
-        this.stationRepo = stationRepo;
-    }
+    private StationRepo stationRepo;
 
     public boolean add(long trainId, Station from, Station to, double price, int seat )
     {

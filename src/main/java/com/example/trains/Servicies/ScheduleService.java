@@ -1,18 +1,16 @@
 package com.example.trains.Servicies;
 
-import com.example.trains.Repo.RouteRepo;
 import com.example.trains.Repo.ScheduleRepo;
 import com.example.trains.Repo.StationRepo;
 import com.example.trains.Repo.TrainRepo;
 import com.example.trains.domain.Route;
+import com.example.trains.domain.Schedule;
 import com.example.trains.domain.Station;
 import com.example.trains.domain.Train;
-import com.example.trains.domain.Schedule;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.sound.midi.SysexMessage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,18 +19,12 @@ import java.util.Set;
 @Service
 public class ScheduleService {
     @Autowired
-    final private StationRepo stationRepo;
+    private StationRepo stationRepo;
 
     @Autowired
-    final private TrainRepo trainRepo;
+    private TrainRepo trainRepo;
     @Autowired
-    final private ScheduleRepo scheduleRepo;
-
-    public ScheduleService(StationRepo stationRepo, RouteRepo routeRepo, TrainRepo trainRepo, ScheduleRepo scheduleRepo) {
-        this.stationRepo = stationRepo;
-        this.trainRepo = trainRepo;
-        this.scheduleRepo = scheduleRepo;
-    }
+    private ScheduleRepo scheduleRepo;
 
     //Get first station of route for calculate time
     private Station getFirstStation(Route route) {

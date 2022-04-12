@@ -8,11 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ScheduleController {
     @Autowired
-    final private ScheduleService scheduleService;
-
-    public ScheduleController(ScheduleService scheduleService) {
-        this.scheduleService = scheduleService;
-    }
+    private ScheduleService scheduleService;
 
     @GetMapping("/admin/refresh-schedule")
     public String refresh()

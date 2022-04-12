@@ -15,17 +15,12 @@ import java.util.Set;
 @Service
 public class SearchService {
     @Autowired
-    final private ScheduleService scheduleService;
+    private ScheduleService scheduleService;
     @Autowired
-    final private StationRepo stationRepo;
+    private StationRepo stationRepo;
     @Autowired
-    final private RouteRepo routeRepo;
+    private RouteRepo routeRepo;
 
-    public SearchService(ScheduleService scheduleService, StationRepo stationRepo, RouteRepo routeRepo) {
-        this.scheduleService = scheduleService;
-        this.stationRepo = stationRepo;
-        this.routeRepo = routeRepo;
-    }
 
     public Iterable<Schedule> getScheduleByStationName(String stationName)
     {

@@ -14,11 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class StationController {
     @Autowired
-    final private AdminService adminService;
-
-    public StationController(AdminService adminService) {
-        this.adminService = adminService;
-    }
+    private AdminService adminService;
 
     @GetMapping("admin/station-list")
     public String stationList(Model model)

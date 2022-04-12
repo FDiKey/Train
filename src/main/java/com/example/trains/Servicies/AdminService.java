@@ -1,7 +1,10 @@
 package com.example.trains.Servicies;
 
 import com.example.trains.Repo.*;
-import com.example.trains.domain.*;
+import com.example.trains.domain.Route;
+import com.example.trains.domain.Station;
+import com.example.trains.domain.Ticket;
+import com.example.trains.domain.Train;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,28 +20,19 @@ import java.util.Set;
 public class AdminService {
 
     @Autowired
-    final private StationRepo stationRepo;
+    private StationRepo stationRepo;
     @Autowired
-    final private PassengerRepo passagerRepo;
+    private PassengerRepo passagerRepo;
     @Autowired
-    final private TrainRepo trainRepo;
+    private TrainRepo trainRepo;
     @Autowired
-    final private RouteRepo routeRepo;
+    private RouteRepo routeRepo;
     @Autowired
-    final private TicketService ticketService;
+    private TicketService ticketService;
     @Autowired
-    final private ScheduleService scheduleService;
-    final private TicketRepo ticketRepo;
-
-    public AdminService(StationRepo stationRepo, PassengerRepo passagerRepo, TrainRepo trainRepo, RouteRepo routeRepo, TicketService ticketService, ScheduleService scheduleService, TicketRepo ticketRepo) {
-        this.stationRepo = stationRepo;
-        this.passagerRepo = passagerRepo;
-        this.trainRepo = trainRepo;
-        this.routeRepo = routeRepo;
-        this.ticketService = ticketService;
-        this.scheduleService = scheduleService;
-        this.ticketRepo = ticketRepo;
-    }
+    private ScheduleService scheduleService;
+    @Autowired
+    private TicketRepo ticketRepo;
 
     public void getAllStations(Model model){
         Iterable<Station> stations = stationRepo.findAll();

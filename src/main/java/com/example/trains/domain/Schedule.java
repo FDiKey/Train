@@ -56,14 +56,14 @@ public class Schedule {
         return dateOnStation != null ? dateOnStation.format(formatter) : "00:00:00";
     }
 
-    public String getDateOnStation(){
+    public LocalDate getDateOnStation(){
 
-        return dateOnStation != null ? dateOnStation.toString() : "00/00/0000";
+        return dateOnStation;
     }
 
-    public String getTimeOnStation(){
+    public LocalTime getTimeOnStation(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return timeOnStation != null ? timeOnStation.toString() : "00:00";
+        return timeOnStation;
     }
     // todo equals and hashcode
 

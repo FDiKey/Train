@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RegistrationController {
 
     @Autowired
-    private final UserService userService;
-
-    public RegistrationController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @GetMapping("/registration")
     public String registration(Model model)
