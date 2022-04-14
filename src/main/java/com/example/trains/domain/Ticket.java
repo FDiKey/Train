@@ -32,7 +32,7 @@ public class Ticket {
     @OneToOne
     private Schedule scheduleTo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Station> stationBetween;
 
     @ManyToOne

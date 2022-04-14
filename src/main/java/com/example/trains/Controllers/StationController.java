@@ -1,8 +1,8 @@
 package com.example.trains.Controllers;
 
 import com.example.trains.Servicies.AdminService;
-import com.example.trains.domain.Route;
 import com.example.trains.domain.Station;
+import com.example.trains.mapper.StationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,8 @@ public class StationController {
     @GetMapping("admin/station-list")
     public String getStationList(Model model)
     {
-        adminService.getAllStationsToFrom(model);
+        var dtos = adminService.getStationsDTO();
+        model.addAttribute("stations", dtos);
         return "station/station-list";
     }
 
@@ -47,7 +48,9 @@ public class StationController {
 
     @GetMapping("admin/station-edit/{station}")
     public String editStation(@PathVariable Station station, Model model){
-        model.addAttribute("station", station);
+        var mapper = new StationMapper();
+        var dto = mapper.getStationEditDto(station);
+        model.addAttribute("station", dto);
         return "station/station-edit";
     }
 
@@ -61,7 +64,7 @@ public class StationController {
     }
 
     @GetMapping("admin/station-delete/{station}")
-    public String deleteStation(Station station, Model model){
+    public String deleteStation(@PathVariable Station station){
         adminService.deleteStation(station);
         return "redirect:/admin/station-list";
     }

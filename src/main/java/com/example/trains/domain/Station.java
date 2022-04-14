@@ -9,13 +9,12 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Data
 public class Station {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Setter
-    private Long Id;
+    private Long id;
     @Getter
     @Setter
     private String name;
@@ -44,6 +43,8 @@ public class Station {
     @Setter
     private Set<Schedule> schedule;
 
+
+
     public Station(String name, Route route, Station previous, Station next)
     {
         this.name = name;
@@ -61,11 +62,11 @@ public class Station {
 
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {

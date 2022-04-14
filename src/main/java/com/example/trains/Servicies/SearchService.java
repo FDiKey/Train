@@ -36,10 +36,13 @@ public class SearchService {
     public void getScheduleFromToStation(String from, String to, Model model){
         Station stationFrom = stationRepo.findByName(from);
         Station stationTo = stationRepo.findByName(to);
+
         if(stationFrom != null && stationTo != null) {
             Iterable<Schedule> scheduleFrom = scheduleService.getScheduleByStation(stationFrom);
             Iterable<Schedule> scheduleTo = scheduleService.getScheduleByStation(stationTo);
             if (scheduleFrom != null && scheduleTo != null) {
+                model.addAttribute("resFrom", from);
+                model.addAttribute("resTo", to);
                 model.addAttribute("schedulesFrom", scheduleFrom);
                 model.addAttribute("schedulesTo", scheduleTo);
             } else
@@ -64,13 +67,7 @@ public class SearchService {
     }
 
     public void getMainPage(Model model) {
-        HashMap<String, Iterable<Station>> stationByRoute = new HashMap<>();
-        var routes = routeRepo.findAll();
-        for(Route route : routes)
-        {
-            stationByRoute.put(route.getNumber(), stationRepo.findStationsByRoute(route));
-        }
-
+        var stationByRoute = stationRepo.findAll();
         model.addAttribute("stationByRoute", stationByRoute);
     }
 }

@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Data
 @AllArgsConstructor
 public class Route {
 

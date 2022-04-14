@@ -96,7 +96,7 @@ public class TicketService {
         }
 
 
-        model.addAttribute("seatCount", seats.size());
+        model.addAttribute("seatCount", seats);
         model.addAttribute("price", 100 * between.stream().count());
         model.addAttribute("scheduleFrom", scheduleFrom);
         model.addAttribute("scheduleTo", scheduleTo);

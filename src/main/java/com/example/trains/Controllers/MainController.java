@@ -26,13 +26,10 @@ public class MainController {
     @GetMapping("/")
     public String index(@RequestParam(required = false, defaultValue = "") String stationFrom,
                         @RequestParam(required = false, defaultValue = "") String stationTo,  Model model){
-        Iterable<Schedule> schedules;
 
+        searchService.getMainPage(model);
         if((!stationFrom.isEmpty() && !stationTo.isEmpty())) {
             searchService.getScheduleFromToStation(stationFrom, stationTo, model);
-        }
-        else {
-            searchService.getMainPage(model);
         }
         return "index";
     }

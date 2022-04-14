@@ -2,23 +2,22 @@
 <@c.page>
 
     <form action="" method="get">
-        <input type="text" name="stationFrom" placeholder="From">
-<#--        <select name="stationFrom">-->
-<#--            <#list stationByRoute as k, v>-->
-<#--                <#list v as station>-->
-<#--                <option>${station.name}</option>-->
-<#--                </#list>-->
-<#--            </#list>-->
-<#--        </select>-->
+<#--        <input type="text" name="stationFrom" placeholder="From">-->
+        <input list="froms" name="stationFrom"  id ="stationFrom" placeholder="From" value="${resFrom?if_exists}">
+        <datalist id="froms">
+            <#list stationByRoute as station>
+                <option>${station.name}</option>
+            </#list>
+        </datalist>
 
-        <input type="text" name="stationTo" placeholder="To">
-<#--        <select name="stationTo">-->
-<#--            <#list stationByRoute as k, v>-->
-<#--                <#list v as station>-->
-<#--                    <option>${station.name}</option>-->
-<#--                </#list>-->
-<#--            </#list>-->
-        </select>
+        <input list="tos" name="stationTo" id="stationTo" placeholder="To" value="${resTo?if_exists}"/>
+        <datalist id="tos">
+            <#list stationByRoute as station>
+                <#list stationByRoute as station>
+                    <option>${station.name}</option>
+                </#list>
+            </#list>
+        </datalist>
 
         <button type="submit">Search</button>
     </form>

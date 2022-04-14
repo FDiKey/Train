@@ -36,6 +36,8 @@ public class Schedule {
 
     private LocalTime timeOnStation;
 
+
+
     public String getTrainNumber() {
         return train != null ? train.getTrainNumber() : "none";
     }

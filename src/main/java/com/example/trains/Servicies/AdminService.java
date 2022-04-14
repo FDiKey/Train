@@ -1,10 +1,15 @@
 package com.example.trains.Servicies;
 
+import com.example.trains.DTO.RouteDTO.RouteEditDTO;
+import com.example.trains.DTO.RouteDTO.RouteFromDTO;
+import com.example.trains.DTO.StationDTO.StationFormDTO;
 import com.example.trains.Repo.*;
 import com.example.trains.domain.Route;
 import com.example.trains.domain.Station;
 import com.example.trains.domain.Ticket;
 import com.example.trains.domain.Train;
+import com.example.trains.mapper.RouteMapper;
+import com.example.trains.mapper.StationMapper;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,7 +19,10 @@ import org.springframework.ui.Model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -34,9 +42,20 @@ public class AdminService {
     @Autowired
     private TicketRepo ticketRepo;
 
-    public void getAllStationsToFrom(Model model){
-        Iterable<Station> stations = stationRepo.findAll();
-        model.addAttribute("stations", stations);
+    public List<Station> getAllStations(){
+        return stationRepo.findAll(Sort.by(Sort.Direction.ASC, "Id"));
+
+    }
+
+    public ArrayList<StationFormDTO> getStationsDTO(){
+        var stations = getAllStations();
+        var mapper = new StationMapper();
+        var stationDtos = new ArrayList<StationFormDTO>();
+
+        for(Station station : stations){
+            stationDtos.add(mapper.getStationListDto(station));
+        }
+        return stationDtos;
     }
 
     public boolean addStaion(String stationName, String route, String previous, String next) {
@@ -52,20 +71,25 @@ public class AdminService {
         Station n = stationRepo.findByName(next);
         Route r = routeRepo.findByNumber(route);
 
-        Station newStation = new Station(stationName, r != null ? r : null, p != null ? p : null, n != null ? n : null);
+        Station newStation = new Station(stationName, r, p, n);
 
         stationRepo.save(newStation);
         return true;
     }
 
-    public Iterable<Route> getAllRoutes() {
-        var routes = routeRepo.findAll();
-        return routes;
+    public List<Route> getAllRoutes() {
+        return routeRepo.findAll(Sort.by(Sort.Direction.ASC, "Id"));
     }
 
-    public void getRoutesToFrom(Model model) {
-        var routes = routeRepo.findAll(Sort.by(Sort.Direction.ASC, "Id"));
-        model.addAttribute("routes", routes);
+    public List<RouteFromDTO> getDtoToRouteList(){
+        var mapper = new RouteMapper();
+        var routes = getAllRoutes();
+        ArrayList<RouteFromDTO> dtos = new ArrayList<>();
+
+        for(Route route : routes){
+            dtos.add(mapper.getRouteEditForm(route));
+        }
+        return dtos;
     }
 
     public boolean addRoute(String number){
@@ -178,5 +202,15 @@ public class AdminService {
     // implement logic of deletion of staion. (refresh schedule etc)
     public void deleteStation(Station station) {
         stationRepo.delete(station);
+    }
+
+    public RouteEditDTO setStationNamesByRoute(Route route) {
+        RouteMapper mapper = new RouteMapper();
+        var dto = mapper.getRouteEditForm(route);
+        var stations = route.getStations().stream().sorted((station1, station2) -> Long.compare(station1.getId(), station2.getId())).collect(Collectors.toList());
+        for(Station station : stations){
+            dto.getStations().add(station.getName());
+        }
+        return dto;
     }
 }

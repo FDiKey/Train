@@ -11,7 +11,7 @@
         <button type="submit">Save</button>
         <#list route.stations as station>
             <br>
-            ${station.name}
+            ${station}
         </#list>
     </form>
 </@c.page>
