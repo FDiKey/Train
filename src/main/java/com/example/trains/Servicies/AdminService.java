@@ -1,8 +1,9 @@
 package com.example.trains.Servicies;
 
-import com.example.trains.DTO.RouteDTO.RouteEditDTO;
-import com.example.trains.DTO.RouteDTO.RouteFromDTO;
-import com.example.trains.DTO.StationDTO.StationFormDTO;
+import com.example.trains.DTO.RouteDTO.RouteDetailedDTO;
+import com.example.trains.DTO.RouteDTO.RouteDTO;
+import com.example.trains.DTO.TicketDTO.StationDTO.StationDTO;
+import com.example.trains.DTO.TicketDTO.TicketFullDTO;
 import com.example.trains.Repo.*;
 import com.example.trains.domain.Route;
 import com.example.trains.domain.Station;
@@ -10,6 +11,7 @@ import com.example.trains.domain.Ticket;
 import com.example.trains.domain.Train;
 import com.example.trains.mapper.RouteMapper;
 import com.example.trains.mapper.StationMapper;
+import com.example.trains.mapper.TicketMapper;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,8 +22,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,10 +49,10 @@ public class AdminService {
 
     }
 
-    public ArrayList<StationFormDTO> getStationsDTO(){
+    public ArrayList<StationDTO> getStationsDTO(){
         var stations = getAllStations();
         var mapper = new StationMapper();
-        var stationDtos = new ArrayList<StationFormDTO>();
+        var stationDtos = new ArrayList<StationDTO>();
 
         for(Station station : stations){
             stationDtos.add(mapper.getStationListDto(station));
@@ -81,10 +83,10 @@ public class AdminService {
         return routeRepo.findAll(Sort.by(Sort.Direction.ASC, "Id"));
     }
 
-    public List<RouteFromDTO> getDtoToRouteList(){
+    public List<RouteDTO> getDtoToRouteList(){
         var mapper = new RouteMapper();
         var routes = getAllRoutes();
-        ArrayList<RouteFromDTO> dtos = new ArrayList<>();
+        ArrayList<RouteDTO> dtos = new ArrayList<>();
 
         for(Route route : routes){
             dtos.add(mapper.getRouteEditForm(route));
@@ -121,10 +123,15 @@ public class AdminService {
         model.addAttribute("trains", trains);
     }
 
-    public Set<Ticket> getAllTickets(String trainNumber) {
+    public HashSet<TicketFullDTO> getAllTickets(String trainNumber) {
         var train = trainRepo.findByTrainNumber(trainNumber);
         var tickets = ticketRepo.findAllByTrain(train);
-        return tickets;
+        var mapper = new TicketMapper();
+        HashSet<TicketFullDTO> ticketDtos = new HashSet<TicketFullDTO>();
+        for(Ticket ticket : tickets){
+            ticketDtos.add(mapper.getFullTicketDTO(ticket));
+        }
+        return ticketDtos;
     }
 
     public boolean isRouteUpdated(@NotNull Route route, String routeNumber, Model model) {
@@ -204,7 +211,7 @@ public class AdminService {
         stationRepo.delete(station);
     }
 
-    public RouteEditDTO setStationNamesByRoute(Route route) {
+    public RouteDetailedDTO setStationNamesByRoute(Route route) {
         RouteMapper mapper = new RouteMapper();
         var dto = mapper.getRouteEditForm(route);
         var stations = route.getStations().stream().sorted((station1, station2) -> Long.compare(station1.getId(), station2.getId())).collect(Collectors.toList());

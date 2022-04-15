@@ -3,11 +3,11 @@ package com.example.trains.DTO.RouteDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteEditDTO extends RouteFromDTO{
+public class RouteDetailedDTO extends RouteDTO {
 
     private ArrayList<String> stations = new ArrayList<>();
 
-    public RouteEditDTO(Long id, String routeNumber) {
+    public RouteDetailedDTO(Long id, String routeNumber) {
         super(id, routeNumber);
     }
 

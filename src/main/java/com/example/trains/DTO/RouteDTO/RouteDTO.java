@@ -1,11 +1,11 @@
 package com.example.trains.DTO.RouteDTO;
 
-public class RouteFromDTO {
+public class RouteDTO {
 
     private Long id;
     private String number;
 
-    public RouteFromDTO(Long id, String routeNumber) {
+    public RouteDTO(Long id, String routeNumber) {
         this.id = id;
         this.number = routeNumber;
     }

@@ -42,14 +42,14 @@ public class Schedule {
         return train != null ? train.getTrainNumber() : "none";
     }
 
-    public String getTrainSeatCount()
+    public int getTrainSeatCount()
     {
-        return train != null ? "" + train.getSeatCount() : "0";
+        return  train.getSeatCount();
     }
 
     public String getStationName()
     {
-        return station != null ? station.getName() : "none";
+        return station.getName();
     }
 
     public String getOnStation()
@@ -64,7 +64,6 @@ public class Schedule {
     }
 
     public LocalTime getTimeOnStation(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return timeOnStation;
     }
 

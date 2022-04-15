@@ -11,16 +11,16 @@
                         <div class="col-5 ml-5" >
                             Station from: <H3>${scheduleFrom.stationName}</H3>
                             <span>On station</span>
-                            : ${scheduleFrom.dateOnStation}
-                            at time : ${scheduleFrom.timeOnStation}
-                            <p class="card-text">Count of free seats: ${scheduleFrom.trainSeatCount}</p>
+                            : ${scheduleFrom.date}
+                            at time : ${scheduleFrom.time}
+                            <p class="card-text">Count of free seats: ${scheduleFrom.seatCount}</p>
                         </div>
                         <div class="col-5 ml-5" >
                             Station to: <H3>${scheduleTo.stationName}</H3>
                             <span>On station</span>
-                            : ${scheduleTo.dateOnStation}
-                            at time : ${scheduleTo.timeOnStation}
-                            <p class="card-text">Count of free seats: ${scheduleTo.trainSeatCount}</p>
+                            : ${scheduleTo.date}
+                            at time : ${scheduleTo.time}
+                            <p class="card-text">Count of free seats: ${scheduleTo.seatCount}</p>
                         </div>
                         <div class="col-2 mt-4">
                         </div>

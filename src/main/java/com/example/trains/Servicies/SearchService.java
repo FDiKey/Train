@@ -1,16 +1,17 @@
 package com.example.trains.Servicies;
 
+import com.example.trains.mapper.ScheduleDTO.ScheduleDTO;
+import com.example.trains.DTO.TicketDTO.StationDTO.StationDTO;
 import com.example.trains.Repo.RouteRepo;
 import com.example.trains.Repo.StationRepo;
-import com.example.trains.domain.Route;
 import com.example.trains.domain.Schedule;
 import com.example.trains.domain.Station;
+import com.example.trains.mapper.StationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.HashMap;
-import java.util.Set;
+import java.util.HashSet;
 
 @Service
 public class SearchService {
@@ -22,24 +23,32 @@ public class SearchService {
     private RouteRepo routeRepo;
 
 
-    public Iterable<Schedule> getSchedulesByStationName(String stationName)
+    public HashSet<ScheduleDTO> getScheduleDtosByStationName(String stationName)
     {
         Station station = stationRepo.findByName(stationName);
+        HashSet<ScheduleDTO> scheduleDtos = new HashSet<ScheduleDTO>();
         if(station != null)
         {
-            return scheduleService.getScheduleByStation(station);
+            for(Schedule schedule : scheduleService.getScheduleByStation(station))
+                scheduleDtos.add(new ScheduleDTO(schedule.getId(),
+                        schedule.getStationName(),
+                        schedule.getTrainNumber(),
+                        schedule.getDateOnStation(),
+                        schedule.getTimeOnStation(),
+                        schedule.getTrainSeatCount()));
+            return scheduleDtos;
         }
         else
             return null;
     }
 
-    public void getScheduleFromToStation(String from, String to, Model model){
-        Station stationFrom = stationRepo.findByName(from);
-        Station stationTo = stationRepo.findByName(to);
+    public void setScheduleFromByStation(String from, String to, Model model){
+        var stationFrom = stationRepo.findByName(from);
+        var stationTo = stationRepo.findByName(to);
 
         if(stationFrom != null && stationTo != null) {
-            Iterable<Schedule> scheduleFrom = scheduleService.getScheduleByStation(stationFrom);
-            Iterable<Schedule> scheduleTo = scheduleService.getScheduleByStation(stationTo);
+            var scheduleFrom = getScheduleDtosByStationName(from);
+            var scheduleTo = getScheduleDtosByStationName(to);
             if (scheduleFrom != null && scheduleTo != null) {
                 model.addAttribute("resFrom", from);
                 model.addAttribute("resTo", to);
@@ -47,14 +56,15 @@ public class SearchService {
                 model.addAttribute("schedulesTo", scheduleTo);
             } else
                 model.addAttribute("message", "Fill from/to stations");
-
 // todo calculate cross station
 //        if(stationFrom.getRoute() == stationTo.getRoute())
 //        {
-//            return true;
+//            get Schedules from to staitons
 //        }
 //        else {
-//            return false;
+//            get cross staiton from stationFrom route and stationTo route
+//            get schedules from stationFrom to  cross station
+//            get schedule from cross station to stationTo
 //        }
         }else{
         model.addAttribute("message", "Incorrect station name");
@@ -66,8 +76,13 @@ public class SearchService {
         return scheduleService.getAllSchedules();
     }
 
-    public void getMainPage(Model model) {
-        var stationByRoute = stationRepo.findAll();
-        model.addAttribute("stationByRoute", stationByRoute);
+    public HashSet<StationDTO>  getMainPage(Model model) {
+        var stations = stationRepo.findAll();
+        var stationMapper = new StationMapper();
+        HashSet<StationDTO> stationDTO = new HashSet<>();
+        for (Station station : stations){
+            stationDTO.add(stationMapper.getStationListDto(station));
+        }
+        return stationDTO;
     }
 }

@@ -1,14 +1,19 @@
 package com.example.trains.Servicies;
 
+import com.example.trains.DTO.TicketDTO.TicketDTO;
+import com.example.trains.DTO.TicketDTO.TicketDetailedDTO;
 import com.example.trains.Repo.PassengerRepo;
 import com.example.trains.Repo.RouteRepo;
 import com.example.trains.Repo.StationRepo;
 import com.example.trains.Repo.TicketRepo;
 import com.example.trains.domain.*;
+import com.example.trains.mapper.ScheduleMapper;
+import com.example.trains.mapper.TicketMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -76,6 +81,7 @@ public class TicketService {
         Station from = scheduleFrom.getStation();
         Station to = scheduleTo.getStation();
         LinkedList<Integer> seats = new LinkedList<>();
+        var scheduleMapper = new ScheduleMapper();
 
         for(int i = 1; i <= train.getSeatCount(); i++) seats.add(i);
 
@@ -90,21 +96,24 @@ public class TicketService {
                 if(ticket.getStationBetween().contains(station) && seats.contains(ticket.getSeatNumber()))
                 {
                     seats.removeFirstOccurrence(ticket.getSeatNumber());
-//                    seats.remove(ticket.getSeatNumber() - 1);
                 }
             }
         }
 
-
         model.addAttribute("seatCount", seats);
         model.addAttribute("price", 100 * between.stream().count());
-        model.addAttribute("scheduleFrom", scheduleFrom);
-        model.addAttribute("scheduleTo", scheduleTo);
+        model.addAttribute("scheduleFrom",  scheduleMapper.getScheduleDTO(scheduleFrom));
+        model.addAttribute("scheduleTo", scheduleMapper.getScheduleDTO(scheduleTo));
     }
 
     public void showTicketsByUser(User user, Model model) {
         Passenger passenger = passengerRepo.findByUser(user);
-        Set<Ticket> tickets = ticketRepo.findAllByPassenger(passenger);
-        model.addAttribute("tickets", tickets);
+        var mapper = new TicketMapper();
+        HashSet<TicketDetailedDTO> ticketDTOs = new HashSet<>();
+        for(Ticket ticket : ticketRepo.findAllByPassenger(passenger))
+        {
+            ticketDTOs.add(mapper.getTiketDtoFromEntity(ticket));
+        }
+        model.addAttribute("tickets", ticketDTOs);
     }
 }

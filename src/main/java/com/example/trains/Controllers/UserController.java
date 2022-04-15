@@ -3,6 +3,7 @@ package com.example.trains.Controllers;
 import com.example.trains.Servicies.UserService;
 import com.example.trains.domain.Role;
 import com.example.trains.domain.User;
+import com.example.trains.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("user-list")
-    public String userList(Model model){
-        model.addAttribute("users", userService.getAllUsers());
+    public String getUserListForm(Model model){
+        var userMapper = new UserMapper();
+        var userList = userMapper.getUserList(userService.getAllUsers());
+        model.addAttribute("users", userList);
         return "user/user-list";
     }
 

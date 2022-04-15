@@ -24,7 +24,10 @@ public class TrainDTO {
         this.timeStart = timeStart;
         HashSet<TicketDTO> ticketDTOs = new HashSet<TicketDTO>();
         for(Ticket ticket : tickets){
-            ticketDTOs.add(new TicketDTO());
+            ticketDTOs.add(new TicketDTO(ticket.getId(),
+                    ticket.getTrain().getTrainNumber(),
+                    ticket.getScheduleFrom().getStationName(),
+                    ticket.getScheduleTo().getStationName()));
         }
         this.tickets = ticketDTOs;
     }

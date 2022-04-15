@@ -27,10 +27,12 @@ public class MainController {
     public String index(@RequestParam(required = false, defaultValue = "") String stationFrom,
                         @RequestParam(required = false, defaultValue = "") String stationTo,  Model model){
 
-        searchService.getMainPage(model);
+        var stationList = searchService.getMainPage(model);
+        model.addAttribute("stationByRoute", stationList);
         if((!stationFrom.isEmpty() && !stationTo.isEmpty())) {
-            searchService.getScheduleFromToStation(stationFrom, stationTo, model);
+            searchService.setScheduleFromByStation(stationFrom, stationTo, model);
         }
+
         return "index";
     }
 

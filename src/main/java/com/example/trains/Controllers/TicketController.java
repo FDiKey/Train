@@ -26,7 +26,7 @@ public class TicketController {
     public String getTrainTickets(@RequestParam(required = false) String trainNumber, Model model)
     {
         if(trainNumber != null) {
-            Iterable<Ticket> tickets = adminService.getAllTickets(trainNumber);
+            var tickets = adminService.getAllTickets(trainNumber);
             model.addAttribute("tickets", tickets);
         }
         adminService.getAllTrainsToFrom(model);

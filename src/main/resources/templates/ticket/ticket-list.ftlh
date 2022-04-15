@@ -13,10 +13,10 @@
         <#if tickets??>
         <#list tickets as ticket>
             <br>
-            From : ${ticket.scheduleFrom.stationName}
-            To : ${ticket.scheduleTo.stationName}
+            From : ${ticket.stationFrom}
+            To : ${ticket.stationTo}
             ${ticket.seatNumber}
-            Passenger : ${ticket.passenger.name} ${ticket.passenger.surname}
+            Passenger : ${ticket.passengerName} ${ticket.passengerSurname}
         </#list>
         </#if>
         <#if message??>

@@ -1,11 +1,11 @@
-package com.example.trains.DTO.StationDTO;
+package com.example.trains.DTO.TicketDTO.StationDTO;
 
-public class StationFormDTO {
+public class StationDTO {
     private Long id;
     private String name;
     private String routeNumber;
 
-    public StationFormDTO(Long id, String name, String routeNumber) {
+    public StationDTO(Long id, String name, String routeNumber) {
         this.id = id;
         this.name = name;
         this.routeNumber = routeNumber;

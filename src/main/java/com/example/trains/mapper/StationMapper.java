@@ -1,17 +1,17 @@
 package com.example.trains.mapper;
 
-import com.example.trains.DTO.StationDTO.StationEditDTO;
-import com.example.trains.DTO.StationDTO.StationFormDTO;
+import com.example.trains.DTO.TicketDTO.StationDTO.StationDetailedDTO;
+import com.example.trains.DTO.TicketDTO.StationDTO.StationDTO;
 import com.example.trains.domain.Station;
 
 public class StationMapper {
 
-    public StationFormDTO getStationListDto(Station station){
-        return new StationFormDTO(station.getId(), station.getName(), station.getRouteNumber());
+    public StationDTO getStationListDto(Station station){
+        return new StationDTO(station.getId(), station.getName(), station.getRouteNumber());
     }
 
-    public StationEditDTO getStationEditDto(Station station){
-        return new StationEditDTO(station.getId(),
+    public StationDetailedDTO getStationEditDto(Station station){
+        return new StationDetailedDTO(station.getId(),
                 station.getName(),
                 station.getRouteNumber(),
                 station.getPreviousStation() != null ? getStationListDto(station.getPreviousStation()) : null,
